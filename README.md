@@ -15,6 +15,8 @@ evals/<사례 이름>/graders/        잘 됐는지 판단하는 기준
 ## 들어 있는 스킬
 
 - `witsttcpw`: 막혔을 때 작동할 수 있는 가장 단순한 것부터 만들게 합니다. 이름은 What Is The Simplest Thing That Could Possibly Work의 머리글자입니다.
+- `crosscheck`: 작업이 끝나고 다시 버그가 없는지 다른 기능에 문제를 발생 시킬 가능성이 있는지 더블체크 합니다.
+- `usertest`: 작업이 끝나고 사용자 입장에서 테스트를 진행해 보며 문제를 발생 시킬 가능성이 있는지 더블체크 합니다.
 
 ## Claude에게 보낼 문장
 
