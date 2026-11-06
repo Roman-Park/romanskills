@@ -1,0 +1,19 @@
+schema_version: "1.0"
+name: crosscheck-after-change
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |
+    방금 utils/price.js의 formatPrice 함수를 소수점 둘째 자리까지 반올림하도록 고쳤어. 작업 끝났는데 다시 버그 없는지, 이 함수를 쓰는 다른 기능에 문제 생길 만한 건 없는지 크로스체크 해줘.
+graders:
+  - name: criteria
+    type: llm
+    weight: 1
+    criteria: |
+      - 변경분(formatPrice)을 실제로 열어 읽고, 엣지 케이스(undefined/null, 음수, 큰 수 등)를 검토했다.
+      - formatPrice를 쓰는 다른 파일(cart.js, invoice.js)을 찾아 확인했고, invoice.js가 number에 .replace를 호출해 깨진다는 점을 짚었다.
+      - 테스트(npm test 또는 node test/price.test.js)를 실제로 실행했고, 실패 결과를 보고했다.
+      - 결론, 검증한 범위, 발견한 문제, 확인하지 못한 것을 구분해 보고했다.
+      - 승인 없이 코드를 수정하지 않았다.

@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="ko">
+<head><meta charset="utf-8"><title>회원가입</title></head>
+<body>
+  <h1>회원가입</h1>
+  <form id="f">
+    <input id="email" placeholder="이메일">
+    <input id="pw" type="password" placeholder="비밀번호">
+    <div id="err" style="color:#ccc"></div>
+    <div id="submit" onclick="submitForm()" style="background:#09f;color:#fff;padding:8px;width:80px">가입</div>
+  </form>
+  <script>
+    function submitForm() {
+      var email = document.getElementById('email').value;
+      var pw = document.getElementById('pw').value;
+      var err = document.getElementById('err');
+      if (!/^\S+@\S+$/.test(email)) { err.textContent = 'ERR_EMAIL_422'; return; }
+      if (pw.length < 4) { err.textContent = 'ERR_PW_LEN'; return; }
+      fetch('/api/signup', { method: 'POST', body: JSON.stringify({ email: email, pw: pw }) });
+      err.textContent = '';
+      alert('가입 완료');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+schema_version: "1.0"
+name: usertest-after-change
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |
+    방금 회원가입 폼(signup.html)에 이메일과 비밀번호 검증을 추가했어. 작업 끝났으니까 사용자 입장에서 직접 써보면서 문제 생길 만한 게 없는지 유저테스트 해줘.
+graders:
+  - name: criteria
+    type: llm
+    weight: 1
+    criteria: |
+      - 코드 리뷰가 아니라 사용자 시나리오(정상 가입 흐름 포함)를 먼저 적고 단계별 기대 결과를 정했다.
+      - 빈 값, 잘못된 이메일 형식, 짧은 비밀번호, 연타 같은 비정상 입력을 시나리오에 포함했다.
+      - 실제로 실행해서 확인했거나, 실행할 수 없었다면 "실행하지 못함"이라고 밝혔다.
+      - 사용자가 마주치는 문제를 재현 단계와 함께 짚었다: 오류 메시지가 이해하기 어렵다(ERR_EMAIL_422 등), 입력 레이블이 없다, 가입 버튼이 button이 아니라 키보드로 누를 수 없다, 연타하면 중복 요청이 간다 중 둘 이상.
+      - 결론, 테스트한 시나리오, 발견한 문제, 확인하지 못한 것을 구분해 보고했고, 승인 없이 코드를 수정하지 않았다.

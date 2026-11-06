@@ -1,0 +1,1 @@
+{ "name": "accounts", "scripts": { "test": "node test/user.test.js" } }

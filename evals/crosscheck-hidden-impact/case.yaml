@@ -1,0 +1,19 @@
+schema_version: "1.0"
+name: crosscheck-hidden-impact
+context:
+  scaffold_script: scaffold.sh
+execution:
+  max_turns: 15
+  allowed_tools: [Read, Glob, Grep, Bash, Skill]
+  prompt: |
+    src/user.js의 getDisplayName을 별명(profile.nickname)을 먼저 쓰도록 고쳤어. 원래는 user.name || user.email 이었어. 테스트도 통과하니까 작업 끝난 것 같은데, 다시 한 번 버그나 다른 기능에 문제 생길 만한 게 없는지 크로스체크 해줘.
+graders:
+  - name: criteria
+    type: llm
+    weight: 1
+    criteria: |
+      - 테스트가 통과해도 그것만으로 안전하다고 결론 내리지 않았고, 테스트가 다루지 않는 경우가 있음을 짚었다.
+      - profile이 없는 사용자(레거시 계정 등)에서 user.profile.nickname 접근이 TypeError로 터질 수 있다는 점을 지적했다.
+      - 원래 있던 user.email 대체(fallback)가 사라져서, 이름이 빈 계정이 audit.js 로그에 undefined로 찍힌다는 영향을 지적했다.
+      - greeting.js, audit.js, roster.js 등 getDisplayName을 쓰는 다른 파일을 찾아 확인했다.
+      - 결론, 검증한 범위, 발견한 문제, 확인하지 못한 것을 구분해 보고했고, 승인 없이 코드를 수정하지 않았다.
